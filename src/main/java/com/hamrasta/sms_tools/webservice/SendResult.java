@@ -5,9 +5,9 @@
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package com.avalblock.sms_tools.webservice;
+package com.hamrasta.sms_tools.webservice;
 
-public class SendResult  extends com.avalblock.sms_tools.webservice.Result  implements java.io.Serializable {
+public class SendResult  extends com.hamrasta.sms_tools.webservice.Result  implements java.io.Serializable {
     private long[] id;
 
     public SendResult() {

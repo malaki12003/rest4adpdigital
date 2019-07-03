@@ -1,24 +1,16 @@
-package com.avalblock.sms_tools.util;
+package com.hamrasta.sms_tools.util;
 
 
-import com.avalblock.sms_tools.webservice.SendResult;
+import com.hamrasta.sms_tools.webservice.SendResult;
 import org.apache.axis.client.Call;
-import org.apache.axis.encoding.ser.BeanDeserializerFactory;
-import org.apache.axis.encoding.ser.BeanSerializerFactory;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
 import javax.xml.rpc.ServiceException;
 import javax.xml.rpc.encoding.XMLType;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.rmi.RemoteException;
-import java.util.Arrays;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -74,7 +66,7 @@ public class SmsUtil {
         call.setOperationName(new QName(URN, ENQUEUE_METHOD_CALL));
 
         call.setReturnType(new javax.xml.namespace.QName("http://www.adpdigital.com/services/messaging", "SendResult"));
-        call.setReturnClass(com.avalblock.sms_tools.webservice.SendResult.class);
+        call.setReturnClass(com.hamrasta.sms_tools.webservice.SendResult.class);
         call.setReturnQName(new javax.xml.namespace.QName("http://www.adpdigital.com/services/messaging", "sendMultipleReturn"));
 //        QName q = new QName("http://www.w3.org/2001/XMLSchema", "sendResponse");
 

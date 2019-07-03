@@ -1,7 +1,6 @@
-package com.avalblock;
+package com.hamrasta;
 
-import com.avalblock.sms_tools.util.SmsType;
-import com.avalblock.sms_tools.util.SmsUtil;
+import com.hamrasta.sms_tools.util.SmsUtil;
 
 public class Main  {
     public static void main(String[] args) {

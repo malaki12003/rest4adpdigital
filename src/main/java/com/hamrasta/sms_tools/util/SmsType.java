@@ -1,4 +1,4 @@
-package com.avalblock.sms_tools.util;
+package com.hamrasta.sms_tools.util;
 
 public enum SmsType
 {
