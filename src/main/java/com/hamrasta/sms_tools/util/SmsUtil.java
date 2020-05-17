@@ -16,14 +16,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class SmsUtil {
-    private static String username = "avalblock";
-    private static String password = "123654789";
-    private static String sourceNo = "9820002000300";
+
     private static ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 
 
-    public static void send(String phone, String content) {
+    public static void send(String phone, String content, String username ,
+                            String password ,String sourceNo) {
         if (phone == null || phone.isEmpty()) {
             System.out.println("SMS - " + "wrong phone " + phone);
             return;
@@ -39,7 +38,7 @@ public class SmsUtil {
             public void run() {
 
                 try {
-                    doSendTextMessage(cell, content, SmsType.TEXT);
+                    doSendTextMessage(cell, content, SmsType.TEXT,username,password,sourceNo);
                 } catch (ServiceException e) {
                     e.printStackTrace();
                 } catch (MalformedURLException e) {
@@ -53,7 +52,8 @@ public class SmsUtil {
 
     }
 
-    private static void doSendTextMessage(String to, String text, SmsType smsType) throws
+    private static void doSendTextMessage(String to, String text, SmsType smsType, String username ,
+         String password ,String sourceNo) throws
             ServiceException, MalformedURLException, RemoteException {
         String END_POINT_URL = "http://ws.adpdigital.com/services/MessagingService?wsdl";
         String URN = "urn:SOAPSmsQueue";
