@@ -8,24 +8,16 @@ import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
 import javax.xml.rpc.ServiceException;
 import javax.xml.rpc.encoding.XMLType;
-
-import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class SmsUtil {
-
-    private static ExecutorService executorService = Executors.newSingleThreadExecutor();
-
-
-
-    public static void send(String phone, String content, String username ,
-                            String password ,String sourceNo) {
+    public static SendResult send(String phone, String content, String username,
+                                  String password, String sourceNo) throws
+            ServiceException, RemoteException {
         if (phone == null || phone.isEmpty()) {
             System.out.println("SMS - " + "wrong phone " + phone);
-            return;
+            throw new PhoneNumberException();
         }
         if (phone.startsWith("00"))
             phone = phone.substring(2);
@@ -33,28 +25,14 @@ public class SmsUtil {
             phone = "98" + phone.substring(1);
         final String cell = phone;
         System.out.println("SMS - sending sms to " + cell);
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
+        return doSendTextMessage(cell, content, SmsType.TEXT, username, password, sourceNo);
 
-                try {
-                    doSendTextMessage(cell, content, SmsType.TEXT,username,password,sourceNo);
-                } catch (ServiceException e) {
-                    e.printStackTrace();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
 
     }
 
-    private static void doSendTextMessage(String to, String text, SmsType smsType, String username ,
-         String password ,String sourceNo) throws
-            ServiceException, MalformedURLException, RemoteException {
+    private static SendResult doSendTextMessage(String to, String text, SmsType smsType, String username,
+                                                String password, String sourceNo) throws
+            ServiceException, RemoteException {
         String END_POINT_URL = "http://ws.adpdigital.com/services/MessagingService?wsdl";
         String URN = "urn:SOAPSmsQueue";
         String ENQUEUE_METHOD_CALL = "send";
@@ -87,14 +65,17 @@ public class SmsUtil {
         call.addParameter("dueTime", XMLType.XSD_DATETIME, ParameterMode.IN);
         call.addParameter("content", XMLType.XSD_STRING, ParameterMode.IN);
 
-        Object[] params = {username, password, sourceNo, RECIPIENT_NUMBER, "", "", "", smsType.code, (short)2, true, null, text};
+        Object[] params = {username, password, sourceNo, RECIPIENT_NUMBER, "", "", "", smsType.code, (short) 2, true, null, text};
         double startTime = System.currentTimeMillis();
         SendResult result = (SendResult) call.invoke(params);
         System.out.println("SMS - " + to + " - " + result.getStatus());
         System.out.println("SMS - " + to + " request response-time=" + (System.currentTimeMillis() - startTime) / 1000 + " sec.s");
+        return result;
 
     }
-    class SendReturn {
+
+    public static class PhoneNumberException extends RuntimeException {
 
     }
+
 }

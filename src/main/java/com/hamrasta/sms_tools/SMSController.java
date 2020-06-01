@@ -2,17 +2,21 @@ package com.hamrasta.sms_tools;
 
 
 import com.hamrasta.sms_tools.util.SmsUtil;
+import com.hamrasta.sms_tools.webservice.SendResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.xml.rpc.ServiceException;
+import java.rmi.RemoteException;
+
 @RestController
 class SMSController {
 
     @PostMapping("/send")
-    public void send(@RequestBody Message message) {
-        SmsUtil.send(message.phone, message.content,message.username,message.password,message.sourceNo);
+    public SendResult send(@RequestBody Message message) throws ServiceException, RemoteException {
+        return SmsUtil.send(message.phone, message.content,message.username,message.password,message.sourceNo);
     }
     public static class Message{
         private String phone ,content,username , password , sourceNo;
